@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 public class ApplicationTests {
-
     @Test
     public void testMessage() {
         Application app = new Application();
