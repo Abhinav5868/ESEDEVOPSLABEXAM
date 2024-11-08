@@ -1,8 +1,12 @@
 pipeline {
     agent any
     
+    tools {
+        jdk 'JAVA_17'
+    }
+    
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub_token')
+        DOCKERHUB_CREDS = credentials('dockerhub_token')  // Matches the credential ID from Jenkins
         DOCKER_IMAGE = "your-dockerhub-username/your-app-name"
         DOCKER_TAG = "${BUILD_NUMBER}"
     }
@@ -10,7 +14,6 @@ pipeline {
     stages {
         stage('Clone') {
             steps {
-                // Remove the explicit git step since checkout is already done
                 checkout scm
             }
         }
@@ -35,8 +38,9 @@ pipeline {
         
         stage('Docker Push') {
             steps {
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                sh 'echo $DOCKERHUB_CREDS_PSW | docker login -u $DOCKERHUB_CREDS_USR --password-stdin'
                 sh "docker push ${DOCKER_IMAGE}:${DOCKER_TAG}"
+                sh "docker push ${DOCKER_IMAGE}:latest"
             }
         }
     }
