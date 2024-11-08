@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 @RestController
 public class Application {
-    public String getMessage() {
+    public static void main(String[] args) {
         return "Hello, CI/CD Pipeline!";
     }
 
